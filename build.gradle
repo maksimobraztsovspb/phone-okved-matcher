@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '8.1.1' // для создания fat-jar
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.15.2'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.15.2'
+    implementation 'org.apache.commons:commons-lang3:3.20.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
+}
+
+application {
+    mainClass = 'ru.maksim.App'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+// shadowJar вместо jar
+shadowJar {
+    archiveBaseName = 'phone-okved-matcher'
+    archiveVersion = ''
+    archiveClassifier = ''
+
+    manifest {
+        attributes 'Main-Class': 'ru.maksim.App'
+    }
+
+    mergeServiceFiles()
+}
+
+tasks.build.dependsOn shadowJar
